@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "c56d7b85-e981-4ea7-aa5e-015870e6489e",
+		"name": "tiny-bank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get top 3 users with their recent transactions",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/users/top",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"top"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get top 3 users with their recent transactions",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/users/top",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"top"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 24 Oct 2023 19:20:44 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 24 Oct 2023 19:20:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.11"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [\n        {\n            \"id\": 26,\n            \"transactions_count\": 20,\n            \"transactions\": [\n                {\n                    \"id\": 91,\n                    \"status\": \"FAILED\",\n                    \"amount\": 12753687\n                },\n                {\n                    \"id\": 90,\n                    \"status\": \"PENDING\",\n                    \"amount\": 48710091\n                },\n                {\n                    \"id\": 89,\n                    \"status\": \"FAILED\",\n                    \"amount\": 41770284\n                },\n                {\n                    \"id\": 88,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 29216096\n                },\n                {\n                    \"id\": 87,\n                    \"status\": \"PENDING\",\n                    \"amount\": 10416959\n                },\n                {\n                    \"id\": 86,\n                    \"status\": \"PENDING\",\n                    \"amount\": 9849753\n                },\n                {\n                    \"id\": 85,\n                    \"status\": \"FAILED\",\n                    \"amount\": 19027273\n                },\n                {\n                    \"id\": 84,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 35261089\n                },\n                {\n                    \"id\": 83,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 44587575\n                },\n                {\n                    \"id\": 82,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 179967\n                }\n            ]\n        },\n        {\n            \"id\": 24,\n            \"transactions_count\": 12,\n            \"transactions\": [\n                {\n                    \"id\": 66,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 29068712\n                },\n                {\n                    \"id\": 65,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 15890145\n                },\n                {\n                    \"id\": 64,\n                    \"status\": \"PENDING\",\n                    \"amount\": 42345767\n                },\n                {\n                    \"id\": 63,\n                    \"status\": \"FAILED\",\n                    \"amount\": 24142606\n                },\n                {\n                    \"id\": 62,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 20387876\n                },\n                {\n                    \"id\": 61,\n                    \"status\": \"PENDING\",\n                    \"amount\": 21046285\n                },\n                {\n                    \"id\": 60,\n                    \"status\": \"PENDING\",\n                    \"amount\": 16044961\n                },\n                {\n                    \"id\": 59,\n                    \"status\": \"PENDING\",\n                    \"amount\": 43178653\n                },\n                {\n                    \"id\": 58,\n                    \"status\": \"PENDING\",\n                    \"amount\": 23385105\n                },\n                {\n                    \"id\": 57,\n                    \"status\": \"PENDING\",\n                    \"amount\": 28665916\n                }\n            ]\n        },\n        {\n            \"id\": 27,\n            \"transactions_count\": 8,\n            \"transactions\": [\n                {\n                    \"id\": 99,\n                    \"status\": \"FAILED\",\n                    \"amount\": 37463997\n                },\n                {\n                    \"id\": 98,\n                    \"status\": \"FAILED\",\n                    \"amount\": 43401918\n                },\n                {\n                    \"id\": 97,\n                    \"status\": \"PENDING\",\n                    \"amount\": 18640658\n                },\n                {\n                    \"id\": 96,\n                    \"status\": \"COMPLETED\",\n                    \"amount\": 28064958\n                },\n                {\n                    \"id\": 95,\n                    \"status\": \"PENDING\",\n                    \"amount\": 33357956\n                },\n                {\n                    \"id\": 94,\n                    \"status\": \"FAILED\",\n                    \"amount\": 39607068\n                },\n                {\n                    \"id\": 93,\n                    \"status\": \"FAILED\",\n                    \"amount\": 40177096\n                },\n                {\n                    \"id\": 92,\n                    \"status\": \"PENDING\",\n                    \"amount\": 47795539\n                }\n            ]\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Transfet credit between cards",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender_card_number\" : \"610438912091723\", //can be persian or arabic characters\r\n    \"receiver_card_number\": \"6014338912031723\", //can be persian or arabic characters\r\n    \"amount\": 1000000 //in Rials\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/api/cards/transfer",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"cards",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:8000"
+		}
+	]
+}
