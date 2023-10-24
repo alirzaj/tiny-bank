@@ -15,11 +15,6 @@ return [
                 'base_url' => env('KAVENEGAR_BASE_URL'),
                 'api_key' => env('KAVENEGAR_API_KEY')
             ],
-
-            'fake' => [
-                'base_url' => 'sms.url',
-                'api_key' => 'abcd'
-            ]
         ],
     ]
 ];
