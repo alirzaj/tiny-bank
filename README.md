@@ -77,7 +77,8 @@ docker compose run --rm artisan db:seed
 ## Database schema
 Here is the schema of the application's database:
 
-![schema](//TODO add link)
+![tiny-bank](https://github.com/alirzaj/tiny-bank/assets/56073296/70d63bfe-c853-4ef2-8ee0-5dc17ee1cb1e)
+
 
 ## Run tests
 
