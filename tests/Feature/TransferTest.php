@@ -7,6 +7,10 @@ use App\Models\Account;
 use App\Models\Card;
 use App\Models\Fee;
 use App\Models\Transaction;
+use App\Notifications\CreditDepositedNotification;
+use App\Notifications\CreditWithdrewNotification;
+use App\Services\Sms\Facades\SMS;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class TransferTest extends TestCase
@@ -14,6 +18,8 @@ class TransferTest extends TestCase
     /** @test */
     public function users_can_transfer_credit_between_two_cards()
     {
+        SMS::fake();
+
         $sender = Card::factory()->for(Account::factory()->set('balance', 1_000_000))->create();
         $receiver = Card::factory()->for(Account::factory()->set('balance', 0))->create();
 
@@ -25,6 +31,13 @@ class TransferTest extends TestCase
             ])
             ->assertOk();
 
+        $this->assertDatabaseHas(Transaction::class, [
+            'sender_card_id' => $sender->id,
+            'receiver_card_id' => $receiver->id,
+            'amount' => 200_000,
+            'status' => TransactionStatus::COMPLETED->name
+        ]);
+
         $this->assertDatabaseHas(Account::class, [
             'id' => $sender->account->id,
             'balance' => 1_000_000 - (200_000 + config('fee.amount'))
@@ -33,13 +46,6 @@ class TransferTest extends TestCase
         $this->assertDatabaseHas(Account::class, [
             'id' => $receiver->account->id,
             'balance' => 200_000
-        ]);
-
-        $this->assertDatabaseHas(Transaction::class, [
-            'sender_card_id' => $sender->id,
-            'receiver_card_id' => $receiver->id,
-            'amount' => 200_000,
-            'status' => TransactionStatus::COMPLETED->name
         ]);
 
         $this->assertDatabaseHas(Fee::class, [
@@ -51,6 +57,62 @@ class TransferTest extends TestCase
                 ->whereBelongsTo($receiver, 'receiver')
                 ->value('id')
         ]);
+    }
+
+    /** @test */
+    public function when_users_transfer_credit_between_two_cards_they_will_be_notified()
+    {
+        Notification::fake();
+
+        $sender = Card::factory()->for(Account::factory()->set('balance', 1_000_000))->create();
+        $receiver = Card::factory()->for(Account::factory()->set('balance', 0))->create();
+
+        $this
+            ->postJson(route('cards.transfer'), [
+                'sender_card_number' => $sender->number,
+                'receiver_card_number' => $receiver->number,
+                'amount' => 200_000,
+            ])
+            ->assertOk();
+
+        $transactionId = Transaction::query()
+            ->where('status', TransactionStatus::COMPLETED->name)
+            ->where('amount', 200_000)
+            ->whereBelongsTo($sender, 'sender')
+            ->whereBelongsTo($receiver, 'receiver')
+            ->valueOrFail('id');
+
+        Notification::assertCount(2);
+
+        Notification::assertSentTo(
+            $sender->account->user,
+            fn(CreditWithdrewNotification $notification) => $notification->transaction->id === $transactionId
+        );
+
+        Notification::assertSentTo(
+            $receiver->account->user,
+            fn(CreditDepositedNotification $notification) => $notification->transaction->id === $transactionId
+        );
+    }
+
+    /** @test */
+    public function when_users_transfer_credit_between_two_cards_proper_text_messages_are_sent()
+    {
+       SMS::fake();
+
+        $sender = Card::factory()->for(Account::factory()->set('balance', 1_000_000))->create();
+        $receiver = Card::factory()->for(Account::factory()->set('balance', 0))->create();
+
+        $this
+            ->postJson(route('cards.transfer'), [
+                'sender_card_number' => $sender->number,
+                'receiver_card_number' => $receiver->number,
+                'amount' => 200_000,
+            ])
+            ->assertOk();
+
+        SMS::assertSentTo($sender->account->user->phone, '');
+        SMS::assertSentTo($receiver->account->user->phone,'' );
     }
 
     /** @test */
