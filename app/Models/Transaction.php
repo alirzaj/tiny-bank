@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\TransactionStatus;
+use App\Events\TransactionCompleted;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,5 +38,25 @@ class Transaction extends Model
     public function fees(): HasMany
     {
         return $this->hasMany(Fee::class);
+    }
+
+    public function markAsCompleted() : void
+    {
+        if ($this->status === TransactionStatus::COMPLETED){
+            return;
+        }
+
+        $this->update(['status' => TransactionStatus::COMPLETED]);
+
+        TransactionCompleted::dispatch($this);
+    }
+
+    public function markAsFailed() : void
+    {
+        if ($this->status === TransactionStatus::FAILED){
+            return;
+        }
+
+        $this->update(['status' => TransactionStatus::FAILED]);
     }
 }
