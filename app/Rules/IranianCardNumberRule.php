@@ -28,7 +28,7 @@ class IranianCardNumberRule implements ValidationRule
             // Determine the weight (radix) for the digit (2 for even, 1 for odd)
             $radix = $i % 2 === 0 ? 2 : 1;
 
-            $subDigit = intval(substr($cardNumber, $i, 1)) * $radix;
+            $subDigit = (int)$cardNumber[$i] * $radix;
 
             $sum += $subDigit > 9 ? $subDigit - 9 : $subDigit;
         }
