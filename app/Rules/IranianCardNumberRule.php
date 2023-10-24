@@ -12,10 +12,7 @@ class IranianCardNumberRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        dump($value);
-
         if (!preg_match('/^\d{16}$/', $value)) {
-            dump('aa');
             $fail(__('transfer.card.invalid_format'));
         }
 
