@@ -138,6 +138,12 @@ class TransferTest extends TestCase
     }
 
     /** @test */
+    public function sender_card_number_can_bepersian_or_arabic_characters()
+    {
+//TODO
+    }
+
+    /** @test */
     public function users_can_not_transfer_credit_when_they_dont_have_enough_credit()
     {
         $sender = Card::factory()->for(Account::factory()->set('balance', 10_000))->create();
