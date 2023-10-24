@@ -13,6 +13,8 @@ Using this application, you can see a list of users that had the most transactio
   * [*Step 6: Run Seeders*](#step-6-run-seeders)
 * [Database schema](#database-schema)
 * [Run tests](#run-tests)
+* [Postman Collection (API Documentation)](#postman-collection--api-documentation-)
+* [Add a new SMS provider](#add-a-new-sms-provider)
 * [Useful links](#useful-links)
 <!-- TOC -->
 
@@ -90,9 +92,17 @@ docker compose run --rm artisan test
 > In order to keep things simple, this application provides you with only one database out of the box (checkout .env.example and docker-compose.yml for details).
 > If you want to run tests with another database, it's recommended to create a new database (e.g: tiny-bank-testing) and set its credentials in .env file.
 
+## Postman Collection (API Documentation)
+
+In the root directory, there is a file named `tiny-bank.postman_collection.json` that you can import in postman application.
+
+## Add a new SMS provider
+
+In order to add a new provider, create a class that implements the `SmsProviderContract` 
+and add the necessary config to `notification.php` file.
+
 ## Useful links
 
-you may see a directory called Actions. This is a simple pattern to make our code more re-usable by encapsulating one unit of business' logic and to have better testability. Read more about it in [this article](https://freek.dev/1371-refactoring-to-actions).
+You may see a directory called **Actions**. This is a simple pattern to make our code more re-usable by encapsulating one unit of business' logic and to have better testability. Read more about it in [this article](https://freek.dev/1371-refactoring-to-actions).
 
-//TODO write about sms fake
-//TODO write about how to add sms driver
+You might see a class named `SmsFake`. Fake is one of the test doubles. You can read more about it in [this article](https://freek.dev/1171-the-five-types-of-test-doubles-how-to-create-them-in-phpunit).
