@@ -26,6 +26,12 @@ To run this application you need the following dependencies:
 - `MySQL 8.0+`
 
 This application is packaged with Docker out of the box. so if you have Docker installed on your machine, you can follow the below instructions to get things up and running.
+
+> **Note**
+> In order to keep things simple, this application does not have nginx or any other web server out of the box.
+> Please note that **for production use you can not run php artisan serv** and you must configure 
+> a web server alongside a process manager such as FPM.
+
 ### *Step 1: Copy .env.example*
 
 Go to you terminal in the project's root directory and run the following command: (please note that **sensible defaults** for running the application using docker has been provided in .env.example. fell free to change them as you wish.)
