@@ -11,7 +11,7 @@ class TransferCreditAction
 {
     public function __construct(
         protected StorePendingTransactionAction $storePendingTransactionAction,
-        protected MarkTransactionAsCompletedAction $markTransactionAsCompleted
+        protected MarkTransactionAsCompletedAction $markTransactionAsCompletedAction
     )
     {
     }
@@ -29,7 +29,7 @@ class TransferCreditAction
             $senderAccount->decrement($amount + config('fee.amount'));
             $receiverAccount->increment($amount);
 
-            ($this->markTransactionAsCompleted)($transaction);
+            ($this->markTransactionAsCompletedAction)($transaction);
         });
 
         return $transaction;
