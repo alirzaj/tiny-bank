@@ -13,6 +13,7 @@ class TransferController extends Controller
         $sender = Card::query()
             ->where('number', $request->input('sender_card_number'))
             ->firstOrFail();
+
         $receiver = Card::query()
             ->where('number', $request->input('receiver_card_number'))
             ->firstOrFail();
