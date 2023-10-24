@@ -2,12 +2,57 @@
 
 namespace Tests\Feature;
 
+use App\Enums\TransactionStatus;
 use App\Models\Account;
 use App\Models\Card;
+use App\Models\Fee;
+use App\Models\Transaction;
 use Tests\TestCase;
 
 class TransferTest extends TestCase
 {
+    /** @test */
+    public function users_can_transfer_credit_between_two_cards()
+    {
+        $sender = Card::factory()->for(Account::factory()->set('balance', 1_000_000))->create();
+        $receiver = Card::factory()->for(Account::factory()->set('balance', 0))->create();
+
+        $this
+            ->postJson(route('cards.transfer'), [
+                'sender_card_number' => $sender->number,
+                'receiver_card_number' => $receiver->number,
+                'amount' => 200_000,
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas(Account::class, [
+            'id' => $sender->account->id,
+            'balance' => 1_000_000 - (200_000 + config('fee.amount'))
+        ]);
+
+        $this->assertDatabaseHas(Account::class, [
+            'id' => $receiver->account->id,
+            'balance' => 200_000
+        ]);
+
+        $this->assertDatabaseHas(Transaction::class, [
+            'sender_card_id' => $sender->id,
+            'receiver_card_id' => $receiver->id,
+            'amount' => 200_000,
+            'status' => TransactionStatus::COMPLETED->name
+        ]);
+
+        $this->assertDatabaseHas(Fee::class, [
+            'amount' => config('fee.amount'),
+            'transaction_id' => Transaction::query()
+                ->where('status', TransactionStatus::COMPLETED->name)
+                ->where('amount', 200_000)
+                ->whereBelongsTo($sender, 'sender')
+                ->whereBelongsTo($receiver, 'receiver')
+                ->value('id')
+        ]);
+    }
+
     /** @test */
     public function amount_can_not_be_greater_than_500_million_rials()
     {
