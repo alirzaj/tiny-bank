@@ -84,3 +84,5 @@ docker compose run --rm artisan test
 ## Useful links
 
 you may see a directory called Actions. This is a simple pattern to make our code more re-usable by encapsulating one unit of business' logic and to have better testability. Read more about it in [this article](https://freek.dev/1371-refactoring-to-actions).
+
+//TODO write about sms fake
