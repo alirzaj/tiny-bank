@@ -15,11 +15,11 @@ class SmsProviderManager extends Manager
 
     public function createKavenegarDriver(): SmsProviderContract
     {
-
+        return resolve(Kavenegar::class);
     }
 
     public function createGhasedakDriver(): SmsProviderContract
     {
-
+        return resolve(Ghasedak::class);
     }
 }
