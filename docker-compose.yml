@@ -1,0 +1,43 @@
+services:
+    mysql:
+        image: bitnami/mysql:8.0
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/mysql:/bitnami/mysql/data
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_AUTHENTICATION_PLUGIN: caching_sha2_password
+        restart: unless-stopped
+    app:
+        build:
+            context: ./docker
+            dockerfile: app.dockerfile
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - "8000:8000"
+        depends_on:
+            - mysql
+        restart: unless-stopped
+        entrypoint: [ "php", "/var/www/html/artisan", "serve", "--host=0.0.0.0" ]
+    artisan:
+        build:
+            context: ./docker
+            dockerfile: app.dockerfile
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+            - mysql
+        entrypoint: [ "php", "artisan" ]
+    composer:
+        build:
+            context: ./docker
+            dockerfile: app.dockerfile
+        volumes:
+            - ./:/var/www/html
+            - ./docker/composer:/root/.composer
+        entrypoint: [ "composer" ]
