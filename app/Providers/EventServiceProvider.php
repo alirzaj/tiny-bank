@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\TransactionCompleted;
+use App\Listeners\SendTransactionCompletedNotification;
 use App\Listeners\StoreTransactionFee;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -15,7 +16,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         TransactionCompleted::class => [
-            StoreTransactionFee::class
+            StoreTransactionFee::class,
+            SendTransactionCompletedNotification::class
         ],
     ];
 
