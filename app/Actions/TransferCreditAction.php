@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Exceptions\InsufficientBalanceException;
 use App\Models\Card;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class TransferCreditAction
@@ -22,15 +23,23 @@ class TransferCreditAction
 
         $transaction = ($this->storePendingTransactionAction)($senderCard, $receiverCard, $amount);
 
-        DB::transaction(function() use ($receiverCard, $senderCard, $transaction, $amount) {
+        DB::beginTransaction();
+
+        try {
             $senderAccount = $senderCard->account()->lockForUpdate()->firstOrFail();
             $receiverAccount = $receiverCard->account()->lockForUpdate()->firstOrFail();
 
-            $senderAccount->decrement($amount + config('fee.amount'));
-            $receiverAccount->increment($amount);
+            $senderAccount->decrement('balance', $amount + config('fee.amount'));
+            $receiverAccount->increment('balance', $amount);
 
-            ($this->markTransactionAsCompletedAction)($transaction);
-        });
+            $transaction->markAsCompleted();
+
+            DB::commit();
+        } catch (Exception) {
+            DB::rollBack();
+
+            $transaction->markAsFailed();
+        }
 
         return $transaction;
     }
