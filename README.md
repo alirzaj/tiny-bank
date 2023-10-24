@@ -79,7 +79,6 @@ Here is the schema of the application's database:
 
 ![tiny-bank](https://github.com/alirzaj/tiny-bank/assets/56073296/70d63bfe-c853-4ef2-8ee0-5dc17ee1cb1e)
 
-
 ## Run tests
 
 In order to run tests, execute the following command:
@@ -93,6 +92,9 @@ docker compose run --rm artisan test
 > In order to keep things simple, this application provides you with only one database out of the box (checkout .env.example and docker-compose.yml for details).
 > If you want to run tests with another database, it's recommended to create a new database (e.g: tiny-bank-testing) and set its credentials in .env file.
 
+> **Note**
+> This projects provides you with a `.env.testing` file that you can use to run tests.
+> Although if you are using docker, tests will run out of the box and there is no need for external integration.
 ## Postman Collection (API Documentation)
 
 In the root directory, there is a file named `tiny-bank.postman_collection.json` that you can import in postman application.
