@@ -10,6 +10,8 @@ class Fee extends Model
 {
     use HasFactory;
 
+    public const UPDATED_AT = null;
+
     protected $fillable = [
         'transaction_id',
         'amount',
