@@ -106,7 +106,7 @@ class TransferTest extends TestCase
                 'receiver_card_number' => fake()->unique()->creditCardNumber(separator: ''),
                 'amount' => 50000,
             ])
-            ->assertInvalid();
+            ->assertInvalid('receiver_card_number');
     }
 
     /** @test */
