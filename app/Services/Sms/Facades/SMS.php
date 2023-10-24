@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static void send(string $phone, string $message);
- * @method static void assertSentTo(string $phone);
+ * @method static void assertSentTo(string $phone, string $message = null);
  */
 class SMS extends Facade
 {
