@@ -29,8 +29,10 @@ class TransferCreditAction
             $transaction->markAsCompleted();
 
             DB::commit();
-        } catch (Exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
+
+            report($exception);
 
             $transaction->markAsFailed();
         }
