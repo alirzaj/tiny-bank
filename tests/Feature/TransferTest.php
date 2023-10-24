@@ -217,6 +217,6 @@ class TransferTest extends TestCase
                 'receiver_card_number' => $receiver->number,
                 'amount' => 10_000, //sender cannot afford the transfer fee
             ])
-            ->assertInvalid(['amount' => __('transfer.insufficient_balance')]);
+            ->assertInvalid(['sender_card_number' => __('transfer.insufficient_balance')]);
     }
 }
