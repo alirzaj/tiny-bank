@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 /docker/mysql
 /docker/composer
+/docker/redis/dump.rdb

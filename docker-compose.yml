@@ -12,6 +12,17 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_AUTHENTICATION_PLUGIN: caching_sha2_password
         restart: unless-stopped
+    redis:
+        image: bitnami/redis:6.0.16
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./docker/redis:/bitnami/redis/data
+        environment:
+            REDIS_PASSWORD: ${REDIS_PASSWORD}
+            REDIS_AOF_ENABLED: 'no'
+        #command: /opt/bitnami/scripts/redis/run.sh --maxmemory 1000mb
+        restart: unless-stopped
     app:
         build:
             context: ./docker
@@ -24,6 +35,17 @@ services:
             - mysql
         restart: unless-stopped
         entrypoint: [ "php", "/var/www/html/artisan", "serve", "--host=0.0.0.0" ]
+    queue-worker:
+        build:
+            context: ./docker
+            dockerfile: app.dockerfile
+        depends_on:
+            - mysql
+            - redis
+        volumes:
+            - ./:/var/www/html
+        entrypoint: [ "php", "artisan", "queue:work", "--queue=notification,default", "--tries=3" ]
+        restart: unless-stopped
     artisan:
         build:
             context: ./docker
