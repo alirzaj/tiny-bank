@@ -33,6 +33,6 @@ class IranianCardNumberRule implements ValidationRule
             $sum += $subDigit > 9 ? $subDigit - 9 : $subDigit;
         }
 
-        return $sum % 10 !== 0;;
+        return $sum % 10 !== 0;
     }
 }
