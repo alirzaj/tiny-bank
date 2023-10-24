@@ -22,10 +22,10 @@ class TransferCreditAction
 
         $transaction = ($this->storePendingTransactionAction)($senderCard, $receiverCard, $amount);
 
-        $senderAccount = $senderCard->account()->lockForUpdate()->firstOrFail();
-        $receiverAccount = $receiverCard->account()->lockForUpdate()->firstOrFail();
+        DB::transaction(function() use ($receiverCard, $senderCard, $transaction, $amount) {
+            $senderAccount = $senderCard->account()->lockForUpdate()->firstOrFail();
+            $receiverAccount = $receiverCard->account()->lockForUpdate()->firstOrFail();
 
-        DB::transaction(function() use ($transaction, $amount, $receiverAccount, $senderAccount) {
             $senderAccount->decrement($amount + config('fee.amount'));
             $receiverAccount->increment($amount);
 
