@@ -11,7 +11,7 @@ class TransferCreditAction
 {
     public function __construct(
         protected StorePendingTransactionAction $storePendingTransactionAction,
-        protected MarkTransactionAsCompleted    $markTransactionAsCompleted
+        protected MarkTransactionAsCompletedAction $markTransactionAsCompleted
     )
     {
     }

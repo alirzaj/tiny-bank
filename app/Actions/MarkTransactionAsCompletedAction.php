@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Enums\TransactionStatus;
 use App\Models\Transaction;
 
-class MarkTransactionAsCompleted
+class MarkTransactionAsCompletedAction
 {
     public function __invoke(Transaction $transaction): void
     {
