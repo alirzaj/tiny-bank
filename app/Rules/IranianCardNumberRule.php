@@ -21,7 +21,7 @@ class IranianCardNumberRule implements ValidationRule
         }
     }
 
-    private function verifyIranianCardNumber(string $cardNumber): bool
+    public function verifyIranianCardNumber(string $cardNumber): bool
     {
         $sum = 0;
         for ($i = 0; $i < 16; $i++) {

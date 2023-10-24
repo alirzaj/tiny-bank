@@ -111,8 +111,31 @@ class TransferTest extends TestCase
             ])
             ->assertOk();
 
-        SMS::assertSentTo($sender->account->user->phone, '');
-        SMS::assertSentTo($receiver->account->user->phone,'' );
+        $transactionId = Transaction::query()
+            ->where('status', TransactionStatus::COMPLETED->name)
+            ->where('amount', 200_000)
+            ->whereBelongsTo($sender, 'sender')
+            ->whereBelongsTo($receiver, 'receiver')
+            ->valueOrFail('id');
+
+        SMS::assertSentTo(
+            $sender->account->user->phone,
+            __('notification.withdrawal', [
+                'sender_card_number' => $sender->number,
+                'receiver_card_number' => $receiver->number,
+                'amount' => 200_000,
+                'transaction_id' => $transactionId,
+            ])
+        );
+        SMS::assertSentTo(
+            $receiver->account->user->phone,
+            __('notification.deposit', [
+                'sender_card_number' => $sender->number,
+                'receiver_card_number' => $receiver->number,
+                'amount' => 200_000,
+                'transaction_id' => $transactionId,
+            ])
+        );
     }
 
     /** @test */
@@ -150,7 +173,7 @@ class TransferTest extends TestCase
 
         $this
             ->postJson(route('cards.transfer'), [
-                'sender_card_number' => fake()->unique()->creditCardNumber(separator: ''),
+                'sender_card_number' => '61043389' . substr(fake()->unique()->creditCardNumber('Visa'), 8),
                 'receiver_card_number' => $receiver->number,
                 'amount' => 50000,
             ])
@@ -165,7 +188,7 @@ class TransferTest extends TestCase
         $this
             ->postJson(route('cards.transfer'), [
                 'sender_card_number' => $sender->number,
-                'receiver_card_number' => fake()->unique()->creditCardNumber(separator: ''),
+                'receiver_card_number' => '61043389' . substr(fake()->unique()->creditCardNumber('Visa'), 8),
                 'amount' => 50000,
             ])
             ->assertInvalid('receiver_card_number');
@@ -200,9 +223,24 @@ class TransferTest extends TestCase
     }
 
     /** @test */
-    public function sender_card_number_can_bepersian_or_arabic_characters()
+    public function sender_card_number_can_be_persian_or_arabic_characters()
     {
-//TODO
+        SMS::fake();
+
+        $sender = Card::factory()
+            ->for(Account::factory()->set('balance', 1_000_000))
+            ->create(['number' => '۶۱۰۴۳۳۸۹۱۲۰۳۱۷۲۳']);
+        $receiver = Card::factory()
+            ->for(Account::factory()->set('balance', 0))
+            ->create(['number' => '٦١٠٤٣٣٨٧١٢٠٣١٧٢٣']);
+
+        $this
+            ->postJson(route('cards.transfer'), [
+                'sender_card_number' => $sender->number,
+                'receiver_card_number' => $receiver->number,
+                'amount' => 200_000,
+            ])
+            ->assertOk();
     }
 
     /** @test */
