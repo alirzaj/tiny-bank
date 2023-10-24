@@ -5,11 +5,12 @@ Using this application, you can see a list of users that had the most transactio
 
 <!-- TOC -->
 * [How to use this application?](#how-to-use-this-application)
-    * [*Step 1: Copy .env.example*](#step-1-copy-envexample)
-    * [*Step 2: Install the dependencies*](#step-2-install-the-dependencies)
-    * [*Step 3: Generate your application's key*](#step-3-generate-your-applications-key)
-    * [*Step 4: Start the necessary containers*](#step-4-start-the-necessary-containers)
-    * [*Step 5: Migrate the tables*](#step-5-migrate-the-tables)
+  * [*Step 1: Copy .env.example*](#step-1-copy-envexample)
+  * [*Step 2: Install the dependencies*](#step-2-install-the-dependencies)
+  * [*Step 3: Generate your application's key*](#step-3-generate-your-applications-key)
+  * [*Step 4: Start the necessary containers*](#step-4-start-the-necessary-containers)
+  * [*Step 5: Run Migrations*](#step-5-run-migrations)
+  * [*Step 6: Run Seeders*](#step-6-run-seeders)
 * [Database schema](#database-schema)
 * [Run tests](#run-tests)
 * [Useful links](#useful-links)
@@ -55,12 +56,20 @@ Using this command, you can start the necessary containers to run the applicatio
 docker compose up mysql app -d
 ```
 
-### *Step 5: Migrate the tables*
+### *Step 5: Run Migrations*
 
-At last, you need to run this command in order to create the tables in database.
+You need to run this command in order to create the tables in database.
 
 ``` bash
 docker compose run --rm artisan migrate
+```
+
+### *Step 6: Run Seeders*
+
+At last, you need to run this command in order to seed the database.
+
+``` bash
+docker compose run --rm artisan db:seed
 ```
 
 ## Database schema

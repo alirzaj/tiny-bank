@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Account;
+use App\Models\Card;
+use App\Models\Transaction;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $users = User::factory(5)->create();
+        $accounts = Account::factory(5)
+            ->state(new Sequence(fn(Sequence $sequence) => ['user_id' => $users[$sequence->index]['id']]))
+            ->create();
+        $cards = Card::factory(5)
+            ->state(new Sequence(fn(Sequence $sequence) => ['account_id' => $accounts[$sequence->index]['id']]))
+            ->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        foreach ([12, 5, 20, 8, 6,] as $index => $transactionCount) {
+            Transaction::factory()->count($transactionCount)->create([
+                'sender_card_id' => $cards[$index]['id'],
+                'receiver_card_id' => $cards[(($index + 1) % 5)]['id'],
+                'created_at' => now()->subMinutes(rand(0, 9)),
+            ]);
+        }
     }
 }
